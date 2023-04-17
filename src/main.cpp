@@ -2,21 +2,21 @@
 #include <stdio.h>
 
 BOOL Start() {
-    BOOL result = TRUE;
+    BOOL success = TRUE;
 
     printf("Test");
 
-    return result;
+    return success;
 }
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved) {
     UNREFERENCED_PARAMETER(hinstDLL);
     UNREFERENCED_PARAMETER(lpReserved);
 
-    BOOL result = TRUE;
+    BOOL success = TRUE;
 
     if (fdwReason == DLL_PROCESS_ATTACH)
-        result = Start();
+        success = Start();
 
-    return result;
+    return success;
 }
