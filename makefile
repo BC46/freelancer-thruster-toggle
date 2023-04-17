@@ -20,22 +20,22 @@ LD_Flags = /DLL /FILEALIGN:512 /NOLOGO /RELEASE
 all: clean_output $(OUTPUT_FILE) clean
 
 $(OUTPUT_FILE): $(BIN_DIR) $(OBJ_FILES) $(RES_FILE)
-	link $(OBJ_FILES) $(RES_FILE) $(LD_Flags) /OUT:$(OUTPUT_FILE)
+    link $(OBJ_FILES) $(RES_FILE) $(LD_Flags) /OUT:$(OUTPUT_FILE)
 
 $(OBJ_FILES): $(OBJ_DIR)
-	cl $(CXX_FLAGS) $(CPP_FILES) -I$(INCLUDE_DIR) /Fo$(OBJ_FILES)
+    cl $(CXX_FLAGS) $(CPP_FILES) -I$(INCLUDE_DIR) /Fo$(OBJ_FILES)
 
 $(RES_FILE): $(OBJ_DIR)
-	rc /fo $(RES_FILE) $(RC_FILE)
+    rc /fo $(RES_FILE) $(RC_FILE)
 
 $(BIN_DIR):
-	if not exist $(BIN_DIR) mkdir $(BIN_DIR)
+    if not exist $(BIN_DIR) mkdir $(BIN_DIR)
 
 $(OBJ_DIR):
-	if not exist $(OBJ_DIR) mkdir $(OBJ_DIR)
+    if not exist $(OBJ_DIR) mkdir $(OBJ_DIR)
 
 clean_output:
-	if exist $(OUTPUT_FILE) del $(OUTPUT_FILE)
+    if exist $(OUTPUT_FILE) del $(OUTPUT_FILE)
 
 clean:
-	del $(OBJ_FILES) $(RES_FILE)
+    del $(OBJ_FILES) $(RES_FILE)
