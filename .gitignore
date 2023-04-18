@@ -36,3 +36,6 @@
 
 # CLion
 .idea
+
+# VSCode
+.vscode
