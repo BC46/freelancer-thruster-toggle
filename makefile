@@ -7,10 +7,10 @@ RC_DIR = rc
 SRC_DIR = src
 
 RC_FILE = $(RC_DIR)\main.rc
-OBJ_FILES = $(OBJ_DIR)\main.obj
+OBJ_FILES = $(OBJ_DIR)\main.obj $(OBJ_DIR)\utils.obj
 
 RES_FILE = $(OBJ_DIR)\main.RES
-CPP_FILES = $(SRC_DIR)\main.cpp
+CPP_FILES = $(SRC_DIR)\main.cpp $(SRC_DIR)\utils.cpp
 
 OUTPUT_FILE = $(BIN_DIR)\thruster_toggle.dll
 
@@ -23,7 +23,7 @@ $(OUTPUT_FILE): $(BIN_DIR) $(OBJ_FILES) $(RES_FILE)
     link $(OBJ_FILES) $(RES_FILE) $(LD_Flags) /OUT:$(OUTPUT_FILE)
 
 $(OBJ_FILES): $(OBJ_DIR)
-    cl $(CXX_FLAGS) $(CPP_FILES) -I$(INCLUDE_DIR) /Fo$(OBJ_FILES)
+    cl $(CXX_FLAGS) $(CPP_FILES) -I$(INCLUDE_DIR) /Fo./$(OBJ_DIR)/
 
 $(RES_FILE): $(OBJ_DIR)
     rc /fo $(RES_FILE) $(RC_FILE)

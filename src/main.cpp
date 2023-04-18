@@ -1,4 +1,6 @@
 #include "main.h"
+#include "utils.h"
+
 #include <stdio.h>
 
 BOOL Start() {
@@ -6,6 +8,7 @@ BOOL Start() {
 
     printf("Test");
 
+done:
     return success;
 }
 
