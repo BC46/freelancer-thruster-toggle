@@ -1,6 +1,6 @@
 # Freelancer Thruster Toggle
 Plugin for the game Freelancer (2003) that allows players to toggle the Thruster activation using a single key.
-Please note that this functionality isn't useful for most players this plugin is just a proof of concept.
+Please note that this functionality isn't useful for most players as this plugin is just a proof of concept.
 Also, the approach that has been taken to modify the `ids_name` value and key states in-memory is far from the greatest and is only included to demonstrate the possibility.
 
 ## Installation instructions
