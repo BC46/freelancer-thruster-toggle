@@ -2,19 +2,19 @@
 
 std::map<std::string, HMODULE> Utils::modules;
 
-void* Utils::GetVirtualOffset(const std::string &module, DWORD fileOffset)
+DWORD Utils::GetVirtualOffset(const std::string &module, DWORD fileOffset)
 {
     DWORD moduleOffset = (DWORD) FindModuleHandle(module);
 
-    return reinterpret_cast<void*>(moduleOffset + fileOffset);
+    return moduleOffset + fileOffset;
 }
 
-void* Utils::GetProcOffset(const std::string &module, const std::string &proc)
+DWORD Utils::GetProcOffset(const std::string &module, const std::string &proc)
 {
     HMODULE moduleHandle = FindModuleHandle(module);
     FARPROC procAddress = GetProcAddress(moduleHandle, proc.c_str());
 
-    return reinterpret_cast<void*>(procAddress);
+    return reinterpret_cast<DWORD>(procAddress);
 }
 
 HMODULE Utils::FindModuleHandle(const std::string &moduleName)
@@ -34,29 +34,31 @@ HMODULE Utils::FindModuleHandle(const std::string &moduleName)
     return it->second;
 }
 
-BOOL Utils::Hook(void* toHookLocation, void* hookAddr, int instructionLength)
+BOOL Utils::Hook(DWORD toHookLocation, void* hookAddr, int instructionLength)
 {
     // The length of the instruction needs to be at least 5 bytes in order to change it to a jump
     if (instructionLength < 5)
         return false;
 
+    void* hookLocationPtr = reinterpret_cast<void*>(toHookLocation);
+
     // Allows the instruction to be overwritten
     DWORD oldProtection, _;
-    VirtualProtect(toHookLocation, instructionLength, PAGE_READWRITE, &oldProtection);
+    VirtualProtect(hookLocationPtr, instructionLength, PAGE_READWRITE, &oldProtection);
 
     // Change any remaining bytes to "nop" to prevent them from potentially causing issues
     if (instructionLength > 5)
         memset(((char *) toHookLocation + 5), 0x90, instructionLength - 5);
 
     // Calculate the relative jump address to the hook function
-    DWORD jumpAddress = (DWORD) hookAddr - (DWORD) toHookLocation - 5;
+    DWORD jumpAddress = (DWORD) hookAddr - toHookLocation - 5;
 
     // Write the instruction that jumps to the hook function
-    *(BYTE*) toHookLocation = 0xE9;
-    memcpy((void *) ((DWORD) toHookLocation + 1), &jumpAddress, sizeof(DWORD));
+    *(BYTE*) toHookLocation = 0xE9; // jump opcode
+    memcpy((void*) (toHookLocation + 1), &jumpAddress, sizeof(DWORD)); // target address
 
     // Revert protection changes
-    VirtualProtect(toHookLocation, instructionLength, oldProtection, &_);
+    VirtualProtect(hookLocationPtr, instructionLength, oldProtection, &_);
 
     return true;
 }

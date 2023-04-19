@@ -8,7 +8,7 @@ DWORD thrustToggleFileOffset = 0x73C7D;
 const int thrusterToggleInstructionSize = 6;
 
 BOOL Start() {
-    void* thrustToggleStartLocation = Utils::GetVirtualOffset(commonModuleFileName, thrustToggleFileOffset);
+    DWORD thrustToggleStartLocation = Utils::GetVirtualOffset(commonModuleFileName, thrustToggleFileOffset);
 
     // Set values in Hooks namespace
     thrustToggleReturnAddress = (DWORD) thrustToggleStartLocation + thrusterToggleInstructionSize;
