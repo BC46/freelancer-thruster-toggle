@@ -5,7 +5,15 @@ Also, the approach that has been taken to modify the `ids_name` value and key st
 
 ## Installation instructions
 Download the latest `thruster_toggle.dll` from [Releases](https://github.com/BC46/freelancer-thruster-toggle/releases). Move it to the `EXE` folder of your Freelancer installation.
-Next, open the `dacom.ini` file and append the `thruster_toggle.dll` entry to the `[Libraries]` section. 
+Next, open the `dacom.ini` file and append the `thruster_toggle.dll` entry to the `[Libraries]` section.
 
 ## Build instructions
-Build the project using the `NMAKE` tool from Visual Studio C++ 6.0 (VC98). Building the project using other compilers may require the code to be modified.
+Build the project using the `NMAKE` tool from Microsoft Visual C++ 6.0 (VC6). Building the project using other compilers may require the code to be modified.
+
+If you're wondering what my experience with VC6 has been like, the following compiler output pretty much summarizes it:
+```
+src\utils.cpp(3) : fatal error C1001: INTERNAL COMPILER ERROR
+        (compiler file 'msc1.cpp', line 1786)
+         Please choose the Technical Support command on the Visual C++
+         Help menu, or open the Technical Support help file for more information
+```
