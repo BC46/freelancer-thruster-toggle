@@ -4,7 +4,7 @@
 
 extern DWORD thrustToggleReturnAddress;
 
-extern BOOL isThrustOn;
+extern BYTE isThrustOn;
 
 /// @brief Ensures the Thruster activation can be toggled on/off using a single action.
 void ThrustToggle();
