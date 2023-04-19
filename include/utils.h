@@ -18,13 +18,13 @@ public:
     /// @brief Returns the virtual address of the file offset which will be located in the memory.
     /// @param module Name of the module where the offset is located.
     /// @param fileOffset The offset as if it was located using a hex editor.
-    /// @return
+    /// @return DWORD: Virtual offset
     static DWORD GetVirtualOffset(const std::string &module, DWORD fileOffset);
 
     /// @brief Returns the virtual address of a symbol/proc in a specific module.
     /// @param module Name of the module where the symbol/proc resides.
     /// @param proc Name of the proc that should be retrieved.
-    /// @return
+    /// @return DWORD: Proc offset
     static DWORD GetProcOffset(const std::string &module, const std::string &proc);
 
     /// @brief Allows the assembly code execution to be detoured to a custom function (hooking). This function is used to add additional features to a compiled binary.
