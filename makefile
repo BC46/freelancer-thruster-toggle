@@ -14,7 +14,7 @@ CPP_FILES = $(SRC_DIR)\main.cpp $(SRC_DIR)\utils.cpp
 
 OUTPUT_FILE = $(BIN_DIR)\thruster_toggle.dll
 
-CXX_FLAGS = /c /GX /O2 /nologo /W4 /WX /LD /MD
+CXX_FLAGS = /c /GX /O2 /nologo /W3 /WX /LD /MD
 LD_Flags = /DLL /FILEALIGN:512 /NOLOGO /RELEASE
 
 all: clean_output $(OUTPUT_FILE) clean
