@@ -1,15 +1,24 @@
 #include "main.h"
 #include "utils.h"
+#include "hooks.h"
 
-#include <stdio.h>
+const std::string commonModuleFileName = "common.dll";
+
+DWORD thrustToggleFileOffset = 0x73C7D;
+const int thrusterToggleInstructionSize = 6;
 
 BOOL Start() {
-    BOOL success = TRUE;
+    void* thrustToggleStartLocation = Utils::GetVirtualOffset(commonModuleFileName, thrustToggleFileOffset);
 
-    printf("Test");
+    // Set values in Hooks namespace
+    thrustToggleReturnAddress = (DWORD) thrustToggleStartLocation + thrusterToggleInstructionSize;
 
-done:
-    return success;
+    // If one of the hooks fail, return unsuccessful.
+    if (!Utils::Hook(thrustToggleStartLocation, ThrustToggle, thrusterToggleInstructionSize)) {
+        return FALSE;
+    }
+
+    return TRUE;
 }
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved) {

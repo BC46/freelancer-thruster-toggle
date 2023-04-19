@@ -2,18 +2,19 @@
 
 std::map<std::string, HMODULE> Utils::modules;
 
-DWORD Utils::GetVirtualOffset(const std::string &module, DWORD fileOffset)
+void* Utils::GetVirtualOffset(const std::string &module, DWORD fileOffset)
 {
     DWORD moduleOffset = (DWORD) FindModuleHandle(module);
 
-    return moduleOffset + fileOffset;
+    return reinterpret_cast<void*>(moduleOffset + fileOffset);
 }
 
-DWORD Utils::GetProcOffset(const std::string &module, const std::string &proc)
+void* Utils::GetProcOffset(const std::string &module, const std::string &proc)
 {
     HMODULE moduleHandle = FindModuleHandle(module);
+    FARPROC procAddress = GetProcAddress(moduleHandle, proc.c_str());
 
-    return (DWORD) GetProcAddress(moduleHandle, proc.c_str());
+    return reinterpret_cast<void*>(procAddress);
 }
 
 HMODULE Utils::FindModuleHandle(const std::string &moduleName)
@@ -41,7 +42,7 @@ BOOL Utils::Hook(void* toHookLocation, void* hookAddr, int instructionLength)
 
     // Allows the instruction to be overwritten
     DWORD oldProtection, _;
-    VirtualProtect(toHookLocation, instructionLength, PAGE_EXECUTE_READWRITE, &oldProtection);
+    VirtualProtect(toHookLocation, instructionLength, PAGE_READWRITE, &oldProtection);
 
     // Change any remaining bytes to "nop" to prevent them from potentially causing issues
     if (instructionLength > 5)
@@ -52,7 +53,7 @@ BOOL Utils::Hook(void* toHookLocation, void* hookAddr, int instructionLength)
 
     // Write the instruction that jumps to the hook function
     *(BYTE*) toHookLocation = 0xE9;
-    memcpy((DWORD *) toHookLocation + 1, &jumpAddress, sizeof(DWORD));
+    memcpy((void *) ((DWORD) toHookLocation + 1), &jumpAddress, sizeof(DWORD));
 
     // Revert protection changes
     VirtualProtect(toHookLocation, instructionLength, oldProtection, &_);
