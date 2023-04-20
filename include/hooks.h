@@ -4,6 +4,7 @@
 
 extern DWORD thrustToggleReturnAddress;
 extern DWORD checkThrusterReturnAddress;
+extern DWORD playerThrustAddress;
 
 extern BYTE isThrustOn;
 extern BYTE hasBeenActivated;

@@ -2,6 +2,7 @@
 
 DWORD thrustToggleReturnAddress;
 DWORD checkThrusterReturnAddress;
+DWORD playerThrustAddress;
 
 BYTE isThrustOn = 0;
 BYTE hasBeenActivated = 0;
@@ -42,7 +43,12 @@ void __declspec(naked) CheckThruster()
     __asm {
         mov     eax, dword ptr ss:[esp+4]           // Overwritten instructions
         push    ebx
+        mov     esi, playerThrustAddress
+        cmp     esi, ss:[esp+4]
+        jne     done
         mov     byte ptr [hasBeenActivated], al     // Set thruster as activated
+
+    done:
         jmp     [checkThrusterReturnAddress]
     }
 }

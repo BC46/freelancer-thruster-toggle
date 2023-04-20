@@ -17,6 +17,7 @@ BOOL Start() {
     // Set values for hooks
     thrustToggleReturnAddress = thrustToggleStartLocation + thrusterToggleInstructionSize;
     checkThrusterReturnAddress = checkThrusterStartLocation + checkThrusterInstructionSize;
+    playerThrustAddress = 0x546CA6;
 
     // If one of the hooks fail, return unsuccessful.
     if (!Utils::Hook(thrustToggleStartLocation, ThrustToggle, thrusterToggleInstructionSize) ||
