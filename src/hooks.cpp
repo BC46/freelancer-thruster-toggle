@@ -1,6 +1,7 @@
 #include "hooks.h"
 
 DWORD thrustToggleReturnAddress;
+DWORD checkThrusterReturnAddress;
 
 BYTE isThrustOn = 0;
 BYTE hasBeenActivated = 0;
@@ -18,10 +19,15 @@ void __declspec(naked) ThrustToggle() {
     toggleThrust:
         push    eax                                 // Save register values
         push    ebx
+        mov     bl, byte ptr [isThrustOn]
+        test    bl, bl
+        jnz     restore
         xor     byte ptr [isThrustOn], 1
         mov     al, byte ptr [isThrustOn]
         test    al, al
         setne   cl
+
+    restore:
         pop     ebx                                 // Restore saved register values
         pop     eax
 
@@ -34,9 +40,9 @@ void __declspec(naked) ThrustToggle() {
 void __declspec(naked) CheckThruster()
 {
     __asm {
-        mov     byte ptr [hasBeenActivated], 1      // Set thruster as activated
-        mov     al, bl                              // Overwritten instructions
-        pop     ebx
-        ret     4
+        mov     eax, dword ptr ss:[esp+4]           // Overwritten instructions
+        push    ebx
+        mov     byte ptr [hasBeenActivated], al     // Set thruster as activated
+        jmp     [checkThrusterReturnAddress]
     }
 }

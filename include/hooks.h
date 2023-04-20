@@ -3,6 +3,7 @@
 #include <windows.h>
 
 extern DWORD thrustToggleReturnAddress;
+extern DWORD checkThrusterReturnAddress;
 
 extern BYTE isThrustOn;
 extern BYTE hasBeenActivated;
