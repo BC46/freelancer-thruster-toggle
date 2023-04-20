@@ -4,17 +4,21 @@
 
 const std::string commonModuleFileName = "common.dll";
 
-DWORD thrustToggleFileOffset = 0x73C7D;
+const DWORD thrustToggleFileOffset = 0x73C7D;
+const DWORD checkThrusterFileOffset = 0x3D25D;
 const int thrusterToggleInstructionSize = 6;
+const int checkThrusterInstructionSize = 6;
 
 BOOL Start() {
     DWORD thrustToggleStartLocation = Utils::GetVirtualOffset(commonModuleFileName, thrustToggleFileOffset);
+    DWORD checkThrusterStartLocation = Utils::GetVirtualOffset(commonModuleFileName, checkThrusterFileOffset);
 
-    // Set values in Hooks namespace
+    // Set values for hooks
     thrustToggleReturnAddress = (DWORD) thrustToggleStartLocation + thrusterToggleInstructionSize;
 
     // If one of the hooks fail, return unsuccessful.
-    if (!Utils::Hook(thrustToggleStartLocation, ThrustToggle, thrusterToggleInstructionSize)) {
+    if (!Utils::Hook(thrustToggleStartLocation, ThrustToggle, thrusterToggleInstructionSize) ||
+        !Utils::Hook(checkThrusterStartLocation, CheckThruster, checkThrusterInstructionSize)) {
         return FALSE;
     }
 
