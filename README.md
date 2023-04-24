@@ -11,7 +11,7 @@ Next, open the `dacom.ini` file and append the `thruster_toggle.dll` entry to th
 In-game the "ACTIVATE AFTERBURNER" control (TAB key) now functions as a toggle on/off key.
 When flying in space, pressing TAB activates the Thruster continuously until the key is pressed a second time.
 
-In the `thruster_toggle.ini` config file, some additional settings are available to edit the control name.
+In the `thruster_toggle.ini` config file, some additional settings are available to edit the control strings from the options menu.
 
 ## Build instructions
 Build the project using the `NMAKE` tool from Microsoft Visual C++ 6.0 (VC6 or Visual Studio 98) with the included makefile.
