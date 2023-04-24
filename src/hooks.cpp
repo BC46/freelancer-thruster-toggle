@@ -3,11 +3,12 @@
 DWORD thrustToggleReturnAddress;
 DWORD checkThrusterReturnAddress;
 DWORD playerThrustAddress;
+DWORD loadSceneReturnAddress;
 
 BYTE isThrustOn = 0;
 BYTE hasBeenActivated = 0;
 
-void __declspec(naked) ThrustToggle() {
+void __declspec(naked) ThrustToggleHook() {
     __asm {
         mov     edx, dword ptr ds:[eax]             // Overwritten instruction
         xor     ecx, ecx
@@ -38,7 +39,7 @@ void __declspec(naked) ThrustToggle() {
     }
 }
 
-void __declspec(naked) CheckThruster()
+void __declspec(naked) CheckThrusterHook()
 {
     __asm {
         mov     eax, dword ptr ss:[esp+4]           // Overwritten instructions
@@ -50,5 +51,16 @@ void __declspec(naked) CheckThruster()
 
     done:
         jmp     [checkThrusterReturnAddress]        // Go back to the original code
+    }
+}
+
+void __declspec(naked) DisableThrusterHook()
+{
+    __asm {
+        mov     esi, dword ptr ss:[esp+0xC]         // Overwritten instructions
+        push    edi
+        mov     byte ptr [isThrustOn], 0            // Disable the thruster #1
+        mov     byte ptr [hasBeenActivated], 0
+        jmp     [loadSceneReturnAddress]            // Go back to the original code
     }
 }

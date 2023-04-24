@@ -6,9 +6,11 @@ const std::string commonModuleFileName = "common.dll";
 
 const DWORD thrustToggleFileOffset = 0x73C7D;
 const DWORD checkThrusterFileOffset = 0x3D240;
+const DWORD loadSceneStartLocation = 0x5B2A31;
 
 const int thrusterToggleInstructionSize = 6;
 const int checkThrusterInstructionSize = 5;
+const int loadSceneInstructionSize = 5;
 
 BOOL Start() {
     DWORD thrustToggleStartLocation = Utils::GetVirtualOffset(commonModuleFileName, thrustToggleFileOffset);
@@ -18,10 +20,12 @@ BOOL Start() {
     thrustToggleReturnAddress = thrustToggleStartLocation + thrusterToggleInstructionSize;
     checkThrusterReturnAddress = checkThrusterStartLocation + checkThrusterInstructionSize;
     playerThrustAddress = 0x546CA6;
+    loadSceneReturnAddress = loadSceneStartLocation + loadSceneInstructionSize;
 
     // If one of the hooks fail, return unsuccessful.
-    if (!Utils::Hook(thrustToggleStartLocation, ThrustToggle, thrusterToggleInstructionSize) ||
-        !Utils::Hook(checkThrusterStartLocation, CheckThruster, checkThrusterInstructionSize)) {
+    if (!Utils::Hook(thrustToggleStartLocation, ThrustToggleHook, thrusterToggleInstructionSize) ||
+        !Utils::Hook(checkThrusterStartLocation, CheckThrusterHook, checkThrusterInstructionSize) ||
+        !Utils::Hook(loadSceneStartLocation, DisableThrusterHook, loadSceneInstructionSize)) {
         return FALSE;
     }
 
