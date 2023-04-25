@@ -61,7 +61,7 @@ void __declspec(naked) DisableThrusterHook()
     __asm {
         mov     esi, dword ptr ss:[esp+0xC]         // Overwritten instructions
         push    edi
-        mov     byte ptr [isThrustOn], 0            // Disable the thruster #1
+        mov     byte ptr [isThrustOn], 0            // Disable the thruster
         mov     byte ptr [hasBeenActivated], 0
         jmp     [loadSceneReturnAddress]            // Go back to the original code
     }
