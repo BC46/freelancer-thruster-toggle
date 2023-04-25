@@ -1,41 +1,33 @@
 #include "main.h"
 #include "utils.h"
 #include "hooks.h"
-
-const std::string commonModuleFileName = "common.dll";
-
-const DWORD thrustToggleFileOffset = 0x73C7D;
-const DWORD checkThrusterFileOffset = 0x3D240;
-const DWORD loadSceneStartLocation = 0x5B2A31;
-const DWORD keyCmdNicknameCheckStartLocation = 0x57671D;
-
-const int thrusterToggleInstructionSize = 6;
-const int checkThrusterInstructionSize = 5;
-const int loadSceneInstructionSize = 5;
-const int keyCmdNicknameCheckInstructionSize = 6;
+#include "hook_manager.h"
 
 BOOL Start() {
-    DWORD thrustToggleStartLocation = Utils::GetVirtualOffset(commonModuleFileName, thrustToggleFileOffset);
-    DWORD checkThrusterStartLocation = Utils::GetVirtualOffset(commonModuleFileName, checkThrusterFileOffset);
+    // Default values
+    const std::string commonModule = "common.dll";
+    const std::string getValueStringSymbol = "?get_value_string@INI_Reader@@QAEPBDXZ";
 
-    // Set values for hooks
-    thrustToggleReturnAddress = thrustToggleStartLocation + thrusterToggleInstructionSize;
-    checkThrusterReturnAddress = checkThrusterStartLocation + checkThrusterInstructionSize;
-    playerThrustAddress = 0x546CA6;
-    loadSceneReturnAddress = loadSceneStartLocation + loadSceneInstructionSize;
-    iniReaderGetValueStringAddress = Utils::GetProcOffset("common.dll", "?get_value_string@INI_Reader@@QAEPBDXZ");
+    const DWORD loadSceneOffset = 0x1B2A31;
+    const DWORD keyCmdNicknameOffset = 0x17671D;
+    const DWORD thrustToggleOffset = 0x73C7D;
+    const DWORD checkThrusterOffset = 0x3D240;
 
-    keyCmdNicknameCheckReturnAddress = keyCmdNicknameCheckStartLocation + keyCmdNicknameCheckInstructionSize;
+    // Values required by the hooks
+    playerThrustAddress = 0x146CA6 + c_mainBase;
+    iniReaderGetValueStringAddress = Utils::GetProcOffset(commonModule, getValueStringSymbol);
 
-    // If one of the hooks fail, return unsuccessful.
-    if (!Utils::CreateHook(thrustToggleStartLocation, ThrustToggleHook, thrusterToggleInstructionSize) ||
-        !Utils::CreateHook(checkThrusterStartLocation, CheckThrusterHook, checkThrusterInstructionSize) ||
-        !Utils::CreateHook(loadSceneStartLocation, DisableThrusterHook, loadSceneInstructionSize) ||
-        !Utils::CreateHook(keyCmdNicknameCheckStartLocation, UserAfterburnKeyCmdNicknameCheck, keyCmdNicknameCheckInstructionSize)) {
-        return FALSE;
-    }
+    HookManager hookManager;
 
-    return TRUE;
+    // Register hooks and get the return addresses
+    loadSceneReturnAddress =            hookManager.RegisterMainHook(loadSceneOffset,       DisableThrusterHook,                5);
+    keyCmdNicknameCheckReturnAddress =  hookManager.RegisterMainHook(keyCmdNicknameOffset,  UserAfterburnKeyCmdNicknameCheck,   6);
+
+    thrustToggleReturnAddress =         hookManager.RegisterModuleHook(commonModule,    thrustToggleOffset,     ThrustToggleHook,   6);
+    checkThrusterReturnAddress =        hookManager.RegisterModuleHook(commonModule,    checkThrusterOffset,    CheckThrusterHook,  5);
+
+    // Return true/false based on whether all hooks have initialized successfully
+    return hookManager.InitializeHooks();
 }
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved) {

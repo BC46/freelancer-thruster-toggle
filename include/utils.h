@@ -4,6 +4,8 @@
 #include <string>
 #include <map>
 
+extern const DWORD c_mainBase;
+
 class Utils {
 private:
     /// @brief Acts as a module handle cache. The modules are identified by their name in string format.

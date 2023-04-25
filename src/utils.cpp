@@ -1,5 +1,7 @@
 #include "utils.h"
 
+const DWORD c_mainBase = 0x400000;
+
 std::map<std::string, HMODULE> Utils::modules;
 
 DWORD Utils::GetVirtualOffset(const std::string &module, DWORD fileOffset)
@@ -38,7 +40,7 @@ BOOL Utils::CreateHook(DWORD toHookLocation, void* hookAddr, int instructionLeng
 {
     // The length of the instruction needs to be at least 5 bytes in order to change it to a jump
     if (instructionLength < 5)
-        return false;
+        return FALSE;
 
     void* hookLocationPtr = reinterpret_cast<void*>(toHookLocation);
 
@@ -60,5 +62,5 @@ BOOL Utils::CreateHook(DWORD toHookLocation, void* hookAddr, int instructionLeng
     // Revert protection changes
     VirtualProtect(hookLocationPtr, instructionLength, oldProtection, &_);
 
-    return true;
+    return TRUE;
 }
