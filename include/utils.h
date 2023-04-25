@@ -23,14 +23,14 @@ public:
 
     /// @brief Returns the virtual address of a symbol/proc in a specific module.
     /// @param module Name of the module where the symbol/proc resides.
-    /// @param proc Name of the proc that should be retrieved.
+    /// @param symbol Symbol of the proc that should be retrieved.
     /// @return DWORD: Proc offset
-    static DWORD GetProcOffset(const std::string &module, const std::string &proc);
+    static DWORD GetProcOffset(const std::string &module, const std::string &symbol);
 
     /// @brief Allows the assembly code execution to be detoured to a custom function (hooking). This function is used to add additional features to a compiled binary.
     /// @param toHookLocation Memory address where the hook should be set.
     /// @param hookAddr Address of the custom function that has to be called in the hook.
     /// @param instructionLength Amount of bytes indicating the size of the instruction(s) that will be overwritten by the hook. Must be 5 or greater.
     /// @return BOOL: Whether or not the hook could be created.
-    static BOOL Hook(DWORD toHookLocation, void* hookAddr, int instructionLength);
+    static BOOL CreateHook(DWORD toHookLocation, void* hookAddr, int instructionLength);
 };

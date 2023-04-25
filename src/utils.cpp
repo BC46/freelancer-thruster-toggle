@@ -9,10 +9,10 @@ DWORD Utils::GetVirtualOffset(const std::string &module, DWORD fileOffset)
     return moduleOffset + fileOffset;
 }
 
-DWORD Utils::GetProcOffset(const std::string &module, const std::string &proc)
+DWORD Utils::GetProcOffset(const std::string &module, const std::string &symbol)
 {
     HMODULE moduleHandle = FindModuleHandle(module);
-    FARPROC procAddress = GetProcAddress(moduleHandle, proc.c_str());
+    FARPROC procAddress = GetProcAddress(moduleHandle, symbol.c_str());
 
     return reinterpret_cast<DWORD>(procAddress);
 }
@@ -34,7 +34,7 @@ HMODULE Utils::FindModuleHandle(const std::string &moduleName)
     return it->second;
 }
 
-BOOL Utils::Hook(DWORD toHookLocation, void* hookAddr, int instructionLength)
+BOOL Utils::CreateHook(DWORD toHookLocation, void* hookAddr, int instructionLength)
 {
     // The length of the instruction needs to be at least 5 bytes in order to change it to a jump
     if (instructionLength < 5)
