@@ -3,7 +3,8 @@
 #include "hooks.h"
 #include "hook_manager.h"
 
-BOOL Start() {
+BOOL Start()
+{
     // Module and symbol names
     const std::string commonModule =            "common.dll";
     const std::string dacomModule =             "dacom.dll";
@@ -34,7 +35,8 @@ BOOL Start() {
     return hookManager.InitializeHooks();
 }
 
-BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved) {
+BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved)
+{
     UNREFERENCED_PARAMETER(hinstDLL);
     UNREFERENCED_PARAMETER(lpReserved);
 

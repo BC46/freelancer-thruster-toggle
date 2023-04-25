@@ -14,7 +14,8 @@ BYTE foundAfterburnNickname = 0;
 
 const char *afterburnNickname = "USER_AFTERBURN";
 
-void __declspec(naked) ThrustToggleHook() {
+void __declspec(naked) ThrustToggleHook()
+{
     __asm {
         mov     edx, dword ptr ds:[eax]             // Overwritten instruction
         xor     ecx, ecx

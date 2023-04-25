@@ -7,7 +7,8 @@
 /// @brief Base address of the main module.
 extern const DWORD c_mainBase;
 
-class Utils {
+class Utils
+{
 private:
     /// @brief Acts as a module handle cache. The modules are identified by their name in string format.
     static std::map<std::string, HMODULE> modules;

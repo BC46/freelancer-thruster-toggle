@@ -3,13 +3,15 @@
 #include <vector>
 #include <windows.h>
 
-struct HookInfo {
+struct HookInfo
+{
     DWORD toHookLocation;
     void* hookAddr;
     int instructionLength;
 };
 
-class HookManager {
+class HookManager
+{
 private:
     /// @brief Registered hooks.
     std::vector<HookInfo> hooks;
