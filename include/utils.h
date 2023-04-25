@@ -4,6 +4,7 @@
 #include <string>
 #include <map>
 
+/// @brief Base address of the main module.
 extern const DWORD c_mainBase;
 
 class Utils {

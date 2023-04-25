@@ -31,7 +31,7 @@ public:
     /// @param moduleName Name of the module where the hook should be set.
     /// @param fileOffset File offset in the given module where the hook should be set.
     /// @param hookAddr Address of the function that should be called in the hook.
-    /// @param instructionLength
+    /// @param instructionLength Amount of bytes indicating the size of the instruction(s) that will be overwritten by the hook. Must be 5 or greater.
     /// @return Return address of the hook.
     DWORD RegisterModuleHook(const std::string &moduleName, DWORD fileOffset, void* hookAddr, int instructionLength);
 

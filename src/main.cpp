@@ -4,18 +4,22 @@
 #include "hook_manager.h"
 
 BOOL Start() {
-    // Default values
-    const std::string commonModule = "common.dll";
-    const std::string getValueStringSymbol = "?get_value_string@INI_Reader@@QAEPBDXZ";
+    // Module and symbol names
+    const std::string commonModule =            "common.dll";
+    const std::string dacomModule =             "dacom.dll";
+    const std::string getValueStringSymbol =    "?get_value_string@INI_Reader@@QAEPBDXZ";
+    const std::string stricmpSymbol =           "stricmp";
 
-    const DWORD loadSceneOffset = 0x1B2A31;
-    const DWORD keyCmdNicknameOffset = 0x17671D;
-    const DWORD thrustToggleOffset = 0x73C7D;
-    const DWORD checkThrusterOffset = 0x3D240;
+    // Offsets
+    const DWORD loadSceneOffset =       0x1B2A31;
+    const DWORD keyCmdNicknameOffset =  0x17671D;
+    const DWORD thrustToggleOffset =    0x073C7D;
+    const DWORD checkThrusterOffset =   0x03D240;
 
     // Values required by the hooks
-    playerThrustAddress = 0x146CA6 + c_mainBase;
-    iniReaderGetValueStringAddress = Utils::GetProcOffset(commonModule, getValueStringSymbol);
+    playerThrustAddress =               0x146CA6 + c_mainBase;
+    iniReaderGetValueStringAddress =    Utils::GetProcOffset(commonModule, getValueStringSymbol);
+    stricmpAddress =                    Utils::GetProcOffset(dacomModule, stricmpSymbol);
 
     HookManager hookManager;
 

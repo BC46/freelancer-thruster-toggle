@@ -6,9 +6,13 @@ DWORD playerThrustAddress;
 DWORD loadSceneReturnAddress;
 DWORD iniReaderGetValueStringAddress;
 DWORD keyCmdNicknameCheckReturnAddress;
+DWORD stricmpAddress;
 
 BYTE isThrustOn = 0;
 BYTE hasBeenActivated = 0;
+BYTE foundAfterburnNickname = 0;
+
+const char *afterburnNickname = "USER_AFTERBURN";
 
 void __declspec(naked) ThrustToggleHook() {
     __asm {
@@ -70,7 +74,18 @@ void __declspec(naked) DisableThrusterHook()
 void __declspec(naked) UserAfterburnKeyCmdNicknameCheck()
 {
     __asm {
-        call    dword ptr [iniReaderGetValueStringAddress]      // Overwritten instruction
+        call    dword ptr ds:[iniReaderGetValueStringAddress]   // Overwritten instruction
+        push    ecx                                             // Save register values
+        push    edx
+        push    eax                                             // Set value string from ini reader as parameter 2
+        push    [afterburnNickname]                             // Set the afterburn nickname as parameter 1
+        call    dword ptr [stricmpAddress]                      // Call stricmp
+        test    al, al
+        sete    byte ptr [foundAfterburnNickname]               // Set foundAfterburnNickname to 1 if the 2 strings are equal
+        add     esp, 4
+        pop     eax                                             // Restore saved register values
+        pop     edx
+        pop     ecx
         jmp     [keyCmdNicknameCheckReturnAddress]              // Go back to the original code
     }
 }
