@@ -2,16 +2,17 @@
 
 DWORD   thrustToggleReturnAddress,
         checkThrusterReturnAddress,
-        playerThrustAddress,
         loadSceneReturnAddress,
-        iniReaderGetValueStringAddress,
         keyCmdNicknameCheckReturnAddress,
+        playerThrustAddress,
+        keyUpStateReturnAddress,
+        iniReaderGetValueStringAddress,
         stricmpAddress;
 
 BYTE isThrustOn = 0;
 BYTE hasBeenActivated = 0;
 BYTE foundAfterburnNickname = 0;
-BYTE keymapEditComplete = 0;
+BYTE keymapEditsComplete = 0;
 
 const char *afterburnNickname = "USER_AFTERBURN";
 
@@ -77,6 +78,8 @@ void __declspec(naked) UserAfterburnKeyCmdNicknameHook()
 {
     __asm {
         call    dword ptr ds:[iniReaderGetValueStringAddress]   // Overwritten instruction
+        cmp     byte ptr [keymapEditsComplete], 1
+        je      done                                            // Don't carry on if the edits have already been completed
         push    ecx                                             // Save register values
         push    edx
         push    eax                                             // Set value string from ini reader as parameter 2
@@ -88,6 +91,27 @@ void __declspec(naked) UserAfterburnKeyCmdNicknameHook()
         pop     eax                                             // Restore saved register values
         pop     edx
         pop     ecx
+
+    done:
         jmp     [keyCmdNicknameCheckReturnAddress]              // Go back to the original code
+    }
+}
+
+void __declspec(naked) RemoveKeyUpStateHook()
+{
+    __asm {
+        add     esp, 8                                  // Overwritten instruction #1
+        cmp     byte ptr [keymapEditsComplete], 1
+        je      done                                    // Don't carry on if the edits have already been completed
+        push    ecx
+        mov     ecx, 1
+        cmp     byte ptr [foundAfterburnNickname], 1    // If the nickname has been found...
+        cmove   eax, ecx                                //      ensure the key up state won't be set after going back to the original code;
+        sete    byte ptr [keymapEditsComplete]          //      set edits as complete
+        pop     ecx
+
+    done:
+        test    eax, eax                                // Overwritten instruction #2
+        jmp     [keyUpStateReturnAddress]               // Go back to the original code
     }
 }

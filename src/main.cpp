@@ -14,6 +14,7 @@ BOOL Start()
     // Offsets
     const DWORD loadSceneOffset =       0x1B2A31,
                 keyCmdNicknameOffset =  0x17671D,
+                keyUpOffset =           0x1767F2,
                 thrustToggleOffset =    0x073C7D,
                 checkThrusterOffset =   0x03D240;
 
@@ -22,10 +23,11 @@ BOOL Start()
     iniReaderGetValueStringAddress =    Utils::GetProcOffset(commonModule, getValueStringSymbol);
     stricmpAddress =                    Utils::GetProcOffset(dacomModule, stricmpSymbol);
 
-    // Register hooks and get the return addresses
+    // Register hooks and keep the return addresses
     HookManager hM;
     loadSceneReturnAddress =            hM.RegisterMainHook(loadSceneOffset,        DisableThrusterHook,                5);
     keyCmdNicknameCheckReturnAddress =  hM.RegisterMainHook(keyCmdNicknameOffset,   UserAfterburnKeyCmdNicknameHook,    6);
+    keyUpStateReturnAddress =           hM.RegisterMainHook(keyUpOffset,            RemoveKeyUpStateHook,               5);
 
     thrustToggleReturnAddress =         hM.RegisterModuleHook(commonModule, thrustToggleOffset,     ThrustToggleHook,   6);
     checkThrusterReturnAddress =        hM.RegisterModuleHook(commonModule, checkThrusterOffset,    CheckThrusterHook,  5);
