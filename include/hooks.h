@@ -3,18 +3,19 @@
 #include <windows.h>
 
 // Values that the hooks read
-extern DWORD thrustToggleReturnAddress;
-extern DWORD checkThrusterReturnAddress;
-extern DWORD playerThrustAddress;
-extern DWORD loadSceneReturnAddress;
-extern DWORD iniReaderGetValueStringAddress;
-extern DWORD keyCmdNicknameCheckReturnAddress;
-extern DWORD stricmpAddress;
+extern DWORD    thrustToggleReturnAddress,
+                checkThrusterReturnAddress,
+                playerThrustAddress,
+                loadSceneReturnAddress,
+                iniReaderGetValueStringAddress,
+                keyCmdNicknameCheckReturnAddress,
+                stricmpAddress;
 
 // Values that the hooks both read and write to
-extern BYTE isThrustOn;
-extern BYTE hasBeenActivated;
-extern BYTE foundAfterburnNickname;
+extern BYTE isThrustOn,
+            hasBeenActivated,
+            foundAfterburnNickname,
+            keymapEditComplete;
 
 extern const char *afterburnNickname;
 
@@ -28,4 +29,4 @@ void CheckThrusterHook();
 void DisableThrusterHook();
 
 /// @brief Checks via the nickname whether the afterburn key is being parsed in keymap.ini.
-void UserAfterburnKeyCmdNicknameCheck();
+void UserAfterburnKeyCmdNicknameHook();

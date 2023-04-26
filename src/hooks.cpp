@@ -1,16 +1,17 @@
 #include "hooks.h"
 
-DWORD thrustToggleReturnAddress;
-DWORD checkThrusterReturnAddress;
-DWORD playerThrustAddress;
-DWORD loadSceneReturnAddress;
-DWORD iniReaderGetValueStringAddress;
-DWORD keyCmdNicknameCheckReturnAddress;
-DWORD stricmpAddress;
+DWORD   thrustToggleReturnAddress,
+        checkThrusterReturnAddress,
+        playerThrustAddress,
+        loadSceneReturnAddress,
+        iniReaderGetValueStringAddress,
+        keyCmdNicknameCheckReturnAddress,
+        stricmpAddress;
 
 BYTE isThrustOn = 0;
 BYTE hasBeenActivated = 0;
 BYTE foundAfterburnNickname = 0;
+BYTE keymapEditComplete = 0;
 
 const char *afterburnNickname = "USER_AFTERBURN";
 
@@ -72,7 +73,7 @@ void __declspec(naked) DisableThrusterHook()
     }
 }
 
-void __declspec(naked) UserAfterburnKeyCmdNicknameCheck()
+void __declspec(naked) UserAfterburnKeyCmdNicknameHook()
 {
     __asm {
         call    dword ptr ds:[iniReaderGetValueStringAddress]   // Overwritten instruction
