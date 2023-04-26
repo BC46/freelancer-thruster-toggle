@@ -1,5 +1,6 @@
 #pragma once
 
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
 /// @brief Gathers all the configs and hooks in order for the Thruster Toggle functionality to start working.
