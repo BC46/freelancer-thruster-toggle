@@ -31,7 +31,7 @@ void __declspec(naked) ThrustToggleHook()
         push    eax                                 // Save register values
         push    ebx
         mov     bl, byte ptr [isThrustOn]
-        test    bl, bl                              // Test wether the thruster was on previously
+        test    bl, bl                              // Test whether the thruster was on previously
         jnz     restore
         xor     byte ptr [isThrustOn], 1            // Toggle the thrust state
         mov     al, byte ptr [isThrustOn]

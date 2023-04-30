@@ -44,13 +44,9 @@ BOOL Utils::CreateHook(DWORD toHookLocation, void* hookAddr, int instructionLeng
 
     void* hookLocationPtr = reinterpret_cast<void*>(toHookLocation);
 
-    // Allows the instruction to be overwritten
+    // Allows the instructions to be overwritten
     DWORD oldProtection, _;
     VirtualProtect(hookLocationPtr, instructionLength, PAGE_READWRITE, &oldProtection);
-
-    // Change any remaining bytes to "nop" to prevent them from potentially causing issues
-    if (instructionLength > 5)
-        memset(((char *) toHookLocation + 5), 0x90, instructionLength - 5);
 
     // Calculate the relative jump address to the hook function
     DWORD jumpAddress = (DWORD) hookAddr - toHookLocation - 5;
@@ -58,6 +54,10 @@ BOOL Utils::CreateHook(DWORD toHookLocation, void* hookAddr, int instructionLeng
     // Write the instruction that jumps to the hook function
     *(BYTE*) toHookLocation = 0xE9; // jump opcode
     memcpy((void*) (toHookLocation + 1), &jumpAddress, sizeof(DWORD)); // target address
+
+    // Change any remaining bytes to "nop" to prevent them from potentially causing issues
+    if (instructionLength > 5)
+        memset((void *) (toHookLocation + 5), 0x90, instructionLength - 5);
 
     // Revert protection changes
     VirtualProtect(hookLocationPtr, instructionLength, oldProtection, &_);
