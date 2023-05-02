@@ -25,7 +25,8 @@ HMODULE Utils::FindModuleHandle(const std::string &moduleName)
     std::map<std::string, HMODULE>::iterator it = modules.find(moduleName.c_str());
 
     // If the module handle isn't stored in the cache yet, add it to the cache and return it
-    if (it == modules.end()) {
+    if (it == modules.end())
+    {
         HMODULE handle = GetModuleHandleA(moduleName.c_str());
 
         modules.insert(std::pair<std::string, HMODULE>(moduleName, handle));

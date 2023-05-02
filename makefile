@@ -15,10 +15,10 @@ OBJ_FILES = $(OBJ_DIR)\*.obj
 OUTPUT_FILE = $(BIN_DIR)\thruster_toggle.dll
 
 CXX_FLAGS = /c /GX /O2 /nologo /W3 /WX /LD /MD
-LD_Flags = /DLL /FILEALIGN:512 /NOLOGO /RELEASE
+LD_FLAGS = /DLL /FILEALIGN:512 /NOLOGO /RELEASE
 
 $(OUTPUT_FILE): $(OBJ_DIR) $(BIN_DIR) $(RC_FILE) $(RES_FILE) $(CPP_FILES) $(OBJ_FILES)
-    link $(OBJ_FILES) $(RES_FILE) $(LD_Flags) /OUT:$(OUTPUT_FILE)
+    link $(OBJ_FILES) $(RES_FILE) $(LD_FLAGS) /OUT:$(OUTPUT_FILE)
 
 {$(SRC_DIR)}.cpp{$(OBJ_DIR)}.obj::
     $(CPP) $(CXX_FLAGS) $< -I$(INCLUDE_DIR) /Fo./$(OBJ_DIR)/

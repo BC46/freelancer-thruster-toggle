@@ -26,7 +26,8 @@ DWORD HookManager::RegisterModuleHook(const std::string &moduleName, DWORD fileO
 
 BOOL HookManager::InitializeHooks()
 {
-    for (int i = 0; i < hooks.size(); ++i) {
+    for (int i = 0; i < hooks.size(); ++i)
+    {
         if (!Utils::CreateHook(hooks[i].toHookLocation, hooks[i].hookAddr, hooks[i].instructionLength))
             return FALSE;
     }
