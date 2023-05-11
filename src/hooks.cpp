@@ -5,9 +5,13 @@ DWORD   thrustToggleReturnAddress,
         loadSceneReturnAddress,
         keyCmdNicknameCheckReturnAddress,
         playerThrustAddress,
+        jmpFtolAddress,
+        idsNameReturnAddress,
         keyUpStateReturnAddress,
         iniReaderGetValueStringAddress,
         stricmpAddress;
+
+long newIdsName;
 
 BYTE isThrustOn = 0;
 BYTE hasBeenActivated = 0;
@@ -94,6 +98,20 @@ void __declspec(naked) UserAfterburnKeyCmdNicknameHook()
 
     done:
         jmp     [keyCmdNicknameCheckReturnAddress]              // Go back to the original code
+    }
+}
+
+void __declspec(naked) UpdateIdsNameHook()
+{
+    __asm {
+        call    dword ptr ds:[jmpFtolAddress]           // Overwritten instruction
+        cmp     byte ptr [keymapEditsComplete], 1
+        je      done                                    // Don't carry on if the edits have already been completed
+        cmp     byte ptr [foundAfterburnNickname], 0
+        cmovne  eax, dword ptr [newIdsName]             // Replace the ids name if the afterburn nickname has been found
+
+    done:
+        jmp     [idsNameReturnAddress]                  // Go back to the original code
     }
 }
 
