@@ -26,6 +26,9 @@
 *.a
 *.lib
 
+# Export libraries
+*.exp
+
 # Executables
 *.exe
 *.out
