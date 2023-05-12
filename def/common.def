@@ -1,7 +1,4 @@
 EXPORTS
-??0INI_Reader@@QAE@XZ
-??1INI_Reader@@QAE@XZ
-?CreateID@@YAIPBD@Z
 ?open@INI_Reader@@QAE_NPBD_N@Z
 ?read_header@INI_Reader@@QAE_NXZ
 ?is_header@INI_Reader@@QAE_NPBD@Z

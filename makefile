@@ -37,7 +37,8 @@ $(OBJ_DIR):
     if not exist $(OBJ_DIR) mkdir $(OBJ_DIR)
 
 # Dependencies
-$(SRC_DIR)\config_reader.cpp: $(INCLUDE_DIR)\config_reader.h
+$(INCLUDE_DIR)\common.h: $(DEF_FILE)
+$(SRC_DIR)\config_reader.cpp: $(INCLUDE_DIR)\config_reader.h $(INCLUDE_DIR)\common.h
 $(SRC_DIR)\hook_manager.cpp: $(INCLUDE_DIR)\hook_manager.h $(INCLUDE_DIR)\utils.h
 $(SRC_DIR)\hooks.cpp: $(INCLUDE_DIR)\hooks.h
 $(SRC_DIR)\main.cpp: $(INCLUDE_DIR)\main.h $(INCLUDE_DIR)\utils.h $(INCLUDE_DIR)\hooks.h $(INCLUDE_DIR)\hook_manager.h $(INCLUDE_DIR)\config_reader.h
