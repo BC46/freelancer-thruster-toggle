@@ -1,0 +1,7 @@
+EXPORTS
+?CreateID@@YAIPBD@Z
+?open@INI_Reader@@QAE_NPBD_N@Z
+?read_header@INI_Reader@@QAE_NXZ
+?read_value@INI_Reader@@QAE_NXZ
+?get_value_int@INI_Reader@@QAEHI@Z
+?close@INI_Reader@@QAEXXZ
