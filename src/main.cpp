@@ -2,9 +2,23 @@
 #include "utils.h"
 #include "hooks.h"
 #include "hook_manager.h"
+#include "config_reader.h"
 
 BOOL Start()
 {
+    const std::string configPath = "thruster_toggle.ini";
+
+    // Config reading
+    ConfigReader cr;
+    ThrusterConfig tc;
+
+    // Attempt to get the config, return FALSE if it fails
+    if (!cr.GetConfig(configPath, tc))
+        return FALSE;
+
+    // Set the values based on the config information
+    newIdsName = 1465;
+
     // Module names
     const std::string   commonModule =            "common.dll",
                         dacomModule =             "dacom.dll";
@@ -22,8 +36,6 @@ BOOL Start()
     jmpFtolAddress =                    0x1B7EC0 + c_mainBase;
     iniReaderGetValueStringAddress =    Utils::GetProcOffset(commonModule,  "?get_value_string@INI_Reader@@QAEPBDXZ");
     stricmpAddress =                    Utils::GetProcOffset(dacomModule,   "stricmp");
-
-    newIdsName = 1465;
 
     // Register hooks and keep the return addresses
     HookManager hm;
