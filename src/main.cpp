@@ -5,11 +5,9 @@
 
 BOOL Start()
 {
-    // Module and symbol names
+    // Module names
     const std::string   commonModule =            "common.dll",
-                        dacomModule =             "dacom.dll",
-                        getValueStringSymbol =    "?get_value_string@INI_Reader@@QAEPBDXZ",
-                        stricmpSymbol =           "stricmp";
+                        dacomModule =             "dacom.dll";
 
     // Offsets
     const DWORD loadSceneOffset =       0x1B2A31,
@@ -22,23 +20,23 @@ BOOL Start()
     // Values required by the hooks
     playerThrustAddress =               0x146CA6 + c_mainBase;
     jmpFtolAddress =                    0x1B7EC0 + c_mainBase;
-    iniReaderGetValueStringAddress =    Utils::GetProcOffset(commonModule, getValueStringSymbol);
-    stricmpAddress =                    Utils::GetProcOffset(dacomModule, stricmpSymbol);
+    iniReaderGetValueStringAddress =    Utils::GetProcOffset(commonModule,  "?get_value_string@INI_Reader@@QAEPBDXZ");
+    stricmpAddress =                    Utils::GetProcOffset(dacomModule,   "stricmp");
 
     newIdsName = 1465;
 
     // Register hooks and keep the return addresses
-    HookManager hM;
-    loadSceneReturnAddress =            hM.RegisterMainHook(loadSceneOffset,        DisableThrusterHook,                5);
-    keyCmdNicknameCheckReturnAddress =  hM.RegisterMainHook(keyCmdNicknameOffset,   UserAfterburnKeyCmdNicknameHook,    6);
-    keyUpStateReturnAddress =           hM.RegisterMainHook(keyUpOffset,            RemoveKeyUpStateHook,               5);
-    idsNameReturnAddress =              hM.RegisterMainHook(idsNameOffset,          UpdateIdsNameHook,                  5);
+    HookManager hm;
+    loadSceneReturnAddress =            hm.RegisterMainHook(loadSceneOffset,        DisableThrusterHook,                5);
+    keyCmdNicknameCheckReturnAddress =  hm.RegisterMainHook(keyCmdNicknameOffset,   UserAfterburnKeyCmdNicknameHook,    6);
+    keyUpStateReturnAddress =           hm.RegisterMainHook(keyUpOffset,            RemoveKeyUpStateHook,               5);
+    idsNameReturnAddress =              hm.RegisterMainHook(idsNameOffset,          UpdateIdsNameHook,                  5);
 
-    thrustToggleReturnAddress =         hM.RegisterModuleHook(commonModule, thrustToggleOffset,     ThrustToggleHook,   6);
-    checkThrusterReturnAddress =        hM.RegisterModuleHook(commonModule, checkThrusterOffset,    CheckThrusterHook,  5);
+    thrustToggleReturnAddress =         hm.RegisterModuleHook(commonModule, thrustToggleOffset,     ThrustToggleHook,   6);
+    checkThrusterReturnAddress =        hm.RegisterModuleHook(commonModule, checkThrusterOffset,    CheckThrusterHook,  5);
 
     // Return true/false based on whether all hooks have initialized successfully
-    return hM.InitializeHooks();
+    return hm.InitializeHooks();
 }
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved)
