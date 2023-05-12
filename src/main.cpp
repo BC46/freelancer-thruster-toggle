@@ -17,7 +17,7 @@ BOOL Start()
         return FALSE;
 
     // Set the values based on the config information
-    newIdsName = 1465;
+    newIdsName = tc.idsName;
 
     // Module names
     const std::string   commonModule =            "common.dll",
