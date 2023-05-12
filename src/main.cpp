@@ -12,9 +12,9 @@ BOOL Start()
     ConfigReader cr;
     ThrusterConfig tc;
 
-    // Attempt to get the config, return FALSE if it fails
+    // Attempt to get the config, set a default value if it fails
     if (!cr.GetConfig(configPath, tc))
-        return FALSE;
+        tc.idsName = 1485;
 
     // Set the values based on the config information
     newIdsName = tc.idsName;

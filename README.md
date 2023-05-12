@@ -4,8 +4,8 @@ Please note that this functionality isn't useful for most players as this plugin
 Also, the approach that has been taken to modify the `ids_name` value and key states in-memory is far from the greatest and is only included to demonstrate the possibility.
 
 ## Installation instructions
-Download the latest `thruster_toggle.dll` from [Releases](https://github.com/BC46/freelancer-thruster-toggle/releases) and move it to the `EXE` folder of your Freelancer installation.
-Next, open the `dacom.ini` file and append the `thruster_toggle.dll` entry to the `[Libraries]` section.
+Download the latest `thruster_toggle.zip` from [Releases](https://github.com/BC46/freelancer-thruster-toggle/releases). Extract both the `dll` and `ini` file and move them to the `EXE` folder of your Freelancer installation.
+Next, open the `dacom.ini` file and append `thruster_toggle.dll` to the `[Libraries]` section.
 
 ## Usage instructions
 In-game the "ACTIVATE AFTERBURNER" control (TAB key) now functions as a toggle on/off key.
