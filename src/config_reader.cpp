@@ -1,27 +1,26 @@
 #include "config_reader.h"
 
-bool ConfigReader::GetConfig(const std::string &path, ThrusterConfig& config)
+ThrusterConfig::ThrusterConfig()
 {
-    bool foundValue = false;
+    idsName = 1465;
+}
 
-    ir.open(path.c_str(), false);
+void ConfigReader::GetConfig(const std::string &path, ThrusterConfig& config)
+{
+    if (!ir.open(path.c_str(), false))
+        return;
 
     while (ir.read_header())
     {
-        if (ir.is_header("Options"))
+        if (!ir.is_header("Options"))
+            continue;
+
+        while (ir.read_value())
         {
-            while (ir.read_value())
-            {
-                if (ir.is_value("ids_name"))
-                {
-                    config.idsName = ir.get_value_int(0);
-                    foundValue = true;
-                }
-            }
+            if (ir.is_value("ids_name"))
+                config.idsName = ir.get_value_int(0);
         }
     }
 
     ir.close();
-
-    return foundValue;
 }
