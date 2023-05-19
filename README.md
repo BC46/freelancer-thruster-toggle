@@ -8,7 +8,7 @@ Download the latest `thruster_toggle.zip` from [Releases](https://github.com/BC4
 Next, open the `dacom.ini` file and append `thruster_toggle.dll` to the `[Libraries]` section.
 
 ## Usage instructions
-In-game the "ACTIVATE AFTERBURNER" control (TAB key) now functions as a toggle on/off key.
+In-game the "AFTERBURN" control (TAB key) now functions as a toggle on/off key.
 When flying in space, pressing TAB activates the Thruster continuously until the key is pressed a second time.
 
 In the `thruster_toggle.ini` config file, some additional settings are available to edit the control strings from the options menu.
